@@ -30,7 +30,6 @@ int Vers(int N, char *P[]);
 int exec_beuip(int N, char *P[]);
 void ajouteCom(char *nom, int (*fptr)(int argc, char *argv[]));
 void majComInt(void);
-void listeComInt(void);
 int execComInt(int N, char **P);
 int execComExt(char **P);
 

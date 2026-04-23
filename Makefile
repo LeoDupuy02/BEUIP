@@ -1,17 +1,18 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g -I. 
+CFLAGS = -Wall -Werror -g -I.
 LDFLAGS = -lreadline -lpthread
-
-# Executable final
-EXEC = biceps
 
 SRC = biceps.c gescom.c creme.c
 OBJ = biceps.o gescom.o creme.o
 
-all: $(EXEC)
+all: biceps
 
-$(EXEC): $(OBJ)
-	$(CC) -o $@ $^ $(LDFLAGS)
+biceps: $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+memory-leak: CFLAGS = -Wall -Werror -g -O0 -I.
+memory-leak: clean $(OBJ)
+	$(CC) $(CFLAGS) -o biceps-memory-leaks $(OBJ) $(LDFLAGS)
 
 biceps.o: biceps.c gescom.h version.h
 	$(CC) $(CFLAGS) -c biceps.c -o biceps.o
@@ -23,6 +24,4 @@ creme.o: creme.c creme.h
 	$(CC) $(CFLAGS) -c creme.c -o creme.o
 
 clean:
-	rm -f $(OBJ) $(EXEC)
-
-.PHONY: all clean
+	rm -f $(OBJ) biceps biceps-memory-leaks
