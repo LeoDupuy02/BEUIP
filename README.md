@@ -3,7 +3,7 @@ PRENOM: Leo
 
 # Projet BICEPS & BEUIP (Version 2.3 - Rendu TP3)
 
-Ce projet implémente un interpréteur de commandes (shell) personnalisé nommé **BICEPS**, couplé à un service de messagerie instantanée décentralisé nommé **BEUIP** basé sur le protocole UDP. 
+Ce projet implémente un interpréteur de commandes (shell) personnalisé nommé **BICEPS**, couplé à un service de messagerie instantanée décentralisé nommé **BEUIP** basé UDP. 
 
 Cette version 2.3 abandonne l'architecture multi-processus au profit du **multi-threading**, permettant un partage sécurisé des données en mémoire via des mutex.
 
@@ -39,7 +39,7 @@ Le protocole utilise le premier octet du datagramme pour identifier l'action ré
 | **2** | **ACK** | Réponse à un HELLO pour confirmer sa présence. |
 | **9** | **MSG** | Message texte entrant provenant d'un autre utilisateur. |
 
-*Note : Les codes 3, 4, 5 et 6 des versions précédentes (qui utilisaient des sockets locales 127.0.0.1) ont été supprimés. Ces actions sont désormais exécutées directement en mémoire partagée grâce aux threads.*
+*Note : Les codes 3, 4, 5 et 6 des versions précédentes (qui utilisaient des sockets locales 127.0.0.1) ont été supprimés. Ces actions sont désormais exécutées directement en mémoire partagée grâce aux threads. Cela permet une meilleure sécurité et éviter de possibles attaques 'man in the middle" comme il l'était possible avec l'architecture client / serveur.*
 
 ---
 
@@ -54,3 +54,10 @@ make
 
 # Nettoyer les fichiers objets et les exécutables
 make clean
+
+# Génère le binaire de test valgrind
+make memory-leak
+
+# Lancement de l'analyse stricte
+valgrind --leak-check=full --track-origins=yes --errors-for-leak-kinds=all --error-exitcode=1 --log-file=rapport.txt -s./biceps-memory-leaks
+```
